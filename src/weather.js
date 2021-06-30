@@ -1,3 +1,5 @@
+import { dom } from './dom.js';
+
 let weather = (function () {
   let myWeatherObject = {};
   function setWeatherStuff(response) {
@@ -36,10 +38,9 @@ let weather = (function () {
     console.log(myWeatherObject);
   }
   const _WEATHER_THING = '0107a14fae5cf33892e24c15d71cce7d';
-  async function getWeatherData() {
-    let cityName = 'Denver';
+  async function getWeatherData(place) {
+    let cityName = place;
     let weatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${_WEATHER_THING}`;
-    console.log(weatherUrl);
 
     const response = await fetch(weatherUrl, { mode: 'cors' })
       .then(function (response) {
@@ -49,14 +50,18 @@ let weather = (function () {
       .then(function (response) {
         console.log(response);
         setWeatherStuff(response);
+        dom.writeWeather();
       })
       .catch((error) => {
         console.error('Error:', error);
       });
+    // .then(function (response) {
+    // });
   }
 
   return {
     getWeatherData,
+    myWeatherObject,
   };
 })();
 

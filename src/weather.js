@@ -12,6 +12,9 @@ let weather = (function () {
     let windGustSpeed = '';
     let windDir = ''; //0
     let percentCloudiness = ''; //90;
+    let name = ''; //London;
+    let tempMin = ''; //London;
+    let tempMax = ''; //London;
 
     currentTemp = response.main.temp;
     sunrise = new Date(response.sys.sunrise * 1000);
@@ -25,6 +28,9 @@ let weather = (function () {
     windDir = response.wind.deg; //0
     windGustSpeed = response.wind.gust; //0
     percentCloudiness = response.clouds.all;
+    name = response.name;
+    tempMin = response.main.temp_min;
+    tempMax = response.main.temp_max;
 
     myWeatherObject.currentTemp = currentTemp;
     myWeatherObject.sunrise = sunrise;
@@ -35,6 +41,10 @@ let weather = (function () {
     myWeatherObject.windDir = windDir;
     myWeatherObject.windGustSpeed = windGustSpeed;
     myWeatherObject.percentCloudiness = percentCloudiness;
+    myWeatherObject.name = name;
+    myWeatherObject.tempMin = tempMin;
+    myWeatherObject.tempMax = tempMax;
+
     console.log(myWeatherObject);
   }
   const _WEATHER_THING = '0107a14fae5cf33892e24c15d71cce7d';

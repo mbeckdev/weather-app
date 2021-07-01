@@ -34,12 +34,13 @@ main {
 
   box-shadow: 1px 1px 4px 2px black;
   border-radius: 5px;
+  background: linear-gradient(30deg, #4a3434, #aabbcc);
 }
 #temperature-container {
   width: 100%;
   display: flex;
   justify-content: space-around;
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 /* ****************** */

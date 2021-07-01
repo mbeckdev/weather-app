@@ -13,6 +13,9 @@ let dom = (function () {
     windDir: document.getElementById('windDir'),
     windGustSpeed: document.getElementById('windGustSpeed'),
     percentCloudiness: document.getElementById('percentCloudiness'),
+    name: document.getElementById('name'),
+    highTemp: document.getElementById('high-temp'),
+    lowTemp: document.getElementById('low-temp'),
   };
 
   function writeWeather() {
@@ -21,6 +24,16 @@ let dom = (function () {
     domThings.currentTemp.textContent = `${kToF(
       weather.myWeatherObject.currentTemp
     )}\u00B0F`;
+
+    domThings.highTemp.textContent = `${kToF(
+      weather.myWeatherObject.tempMax
+    )}\u00B0F`;
+    domThings.lowTemp.textContent = `${kToF(
+      weather.myWeatherObject.tempMin
+    )}\u00B0F`;
+
+    domThings.sunrise.textContent = weather.myWeatherObject.sunrise;
+    domThings.sunset.textContent = weather.myWeatherObject.sunset;
   }
 
   function kToF(kelvin) {

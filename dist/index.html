@@ -7,12 +7,38 @@
   </head>
 
   <body>
-    <h1>Weather App</h1>
-    <form id="form">
-      <input id="place" type="text" placeholder="London" />
-    </form>
-    <div id="currentTemp">86&#176;F</div>
-    <div id="currentTemp"></div>
+    <div id='container'>
+      <h1>Weather App</h1>
+
+      <form id="form">
+        <label for="place">Choose City</label>
+        <input id="place" name="place" type="text" placeholder="London" />
+      </form>
+
+      <main>
+        <div id="data-container">
+          <h2>London......</h2>
+          <p id='weather-description'>broken clouds</p>
+          <div id="temperature-container">
+            <div><span id="currentTemp">32</span></div>
+            <div id="high-low-container">
+              <div>High <span id="high-temp">62degf</span></div>
+              <div>Low <span id="low-temp">123degf</span></div>
+            </div>
+          </div>
+          <div id='sunlight'>
+            <div>Sunrise <span id="sunrise">12:12am</span></div>
+            <div>Sunset <span id="sunset">8pm</span></span></div>
+          </div>          
+        </div>
+
+        <div id='temperature-units-container'>
+          <button id='f-button'>&#176;F</button>
+          <button id='c-button'>&#176;C</button>
+        </div>
+        <!-- <div id='gif-container'></div> -->
+      </main>
+    </div>
     <script src="main.js"></script>
   </body>
 </html>

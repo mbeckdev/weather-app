@@ -23,9 +23,7 @@ let dom = (function () {
 
   function writeWeather() {
     console.log('writing weather');
-    let degCorFString = '';
-    if (dom.tempUnit == 'C') degCorFString = '\u00B0C';
-    if (dom.tempUnit == 'F') degCorFString = '\u00B0F';
+
     // let tempNumberInCorF = undefined;
     // tempNumberInCorF = getTempNumberInCorF();
 
@@ -33,27 +31,28 @@ let dom = (function () {
     domThings.generalWeatherDescription.textContent =
       weather.myWeatherObject.generalWeatherDescription;
 
-    domThings.currentTemp.textContent = `${getTempNumberInCorF(
-      weather.myWeatherObject.currentTemp
-    )}${degCorFString}`;
+    _writeWeatherTemps();
+    _writeSunriseSunset();
 
-    domThings.highTemp.textContent = `${getTempNumberInCorF(
-      weather.myWeatherObject.tempMax
-    )}${degCorFString}`;
-    domThings.lowTemp.textContent = `${getTempNumberInCorF(
-      weather.myWeatherObject.tempMin
-    )}${degCorFString}`;
+    // let leSunset = weather.myWeatherObject.sunset;
+    // console.log(leSunset);
+  }
 
-    domThings.sunrise.textContent = format(
-      weather.myWeatherObject.sunrise,
-      'h:mm a'
-    );
-    domThings.sunset.textContent = format(
-      weather.myWeatherObject.sunset,
-      'h:mm a'
-    );
-    let leSunset = weather.myWeatherObject.sunset;
-    console.log(leSunset);
+  function _writeSunriseSunset() {
+    // Initial fake data
+    if (weather.myWeatherObject.sunrise == undefined) {
+      domThings.sunrise.textContent = '5:36 AM';
+      domThings.sunset.textContent = '8:31 PM';
+    } else {
+      domThings.sunrise.textContent = format(
+        weather.myWeatherObject.sunrise,
+        'h:mm a'
+      );
+      domThings.sunset.textContent = format(
+        weather.myWeatherObject.sunset,
+        'h:mm a'
+      );
+    }
   }
 
   function getTempNumberInCorF(kelvin) {
@@ -72,19 +71,22 @@ let dom = (function () {
   function kToF(kelvin) {
     let fahrenheit = undefined;
     fahrenheit = ((kelvin - 273.15) * 9) / 5 + 32;
-    fahrenheit = Math.round(fahrenheit * 10) / 10;
+    fahrenheit = Math.round(fahrenheit * 1) / 1;
     return fahrenheit;
   }
   function cToF(kelvin) {
     let celcius = undefined;
     celcius = kelvin - 273.15;
-    celcius = Math.round(celcius * 10) / 10;
+    celcius = Math.round(celcius * 1) / 1;
     return celcius;
   }
 
   function setupInitialDom() {
     _addInitialEventListeners();
+    _writeWeatherTemps();
+    _writeSunriseSunset();
   }
+
   function _addInitialEventListeners() {
     document
       .getElementById('f-button')
@@ -92,7 +94,6 @@ let dom = (function () {
     document
       .getElementById('c-button')
       .addEventListener('click', _handleTempButtonClick);
-
     domThings.form.addEventListener('submit', _formSubmit);
   }
 
@@ -113,13 +114,43 @@ let dom = (function () {
       dom.tempUnit = 'C';
       e.target.classList.toggle('selected');
       domThings.fButton.classList.toggle('selected');
-      writeWeather();
+      _writeWeatherTemps();
     } else if (e.target.id == 'f-button' && dom.tempUnit == 'C') {
       //change to F
       dom.tempUnit = 'F';
       e.target.classList.toggle('selected');
       domThings.cButton.classList.toggle('selected');
-      writeWeather();
+      _writeWeatherTemps();
+    }
+  }
+
+  function _writeWeatherTemps() {
+    let degCorFString = '';
+    if (dom.tempUnit == 'C') degCorFString = '\u00B0C';
+    if (dom.tempUnit == 'F') degCorFString = '\u00B0F';
+
+    //initial numbers
+    if (weather.myWeatherObject.currentTemp == undefined) {
+      domThings.currentTemp.textContent = `${getTempNumberInCorF(
+        274
+      )}${degCorFString}`;
+      domThings.highTemp.textContent = `${getTempNumberInCorF(
+        280
+      )}${degCorFString}`;
+      domThings.lowTemp.textContent = `${getTempNumberInCorF(
+        260
+      )}${degCorFString}`;
+    } else {
+      domThings.currentTemp.textContent = `${getTempNumberInCorF(
+        weather.myWeatherObject.currentTemp
+      )}${degCorFString}`;
+
+      domThings.highTemp.textContent = `${getTempNumberInCorF(
+        weather.myWeatherObject.tempMax
+      )}${degCorFString}`;
+      domThings.lowTemp.textContent = `${getTempNumberInCorF(
+        weather.myWeatherObject.tempMin
+      )}${degCorFString}`;
     }
   }
 

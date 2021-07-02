@@ -6,7 +6,4 @@ import { gif } from './gif.js';
 import { dom } from './dom.js';
 // import format from 'date-fns/format';
 
-// weather.getWeatherData();
-console.log('a');
-
 dom.setupInitialDom();

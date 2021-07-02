@@ -2,6 +2,7 @@ import { dom } from './dom.js';
 
 let weather = (function () {
   let myWeatherObject = {};
+
   function setWeatherStuff(response) {
     let currentTemp = '';
     let sunrise = new Date();
@@ -15,12 +16,17 @@ let weather = (function () {
     let name = ''; //London;
     let tempMin = ''; //London;
     let tempMax = ''; //London;
+    let timezone = ''; //3600 London, Denver -21600
+
+    //Translate response time to your local computer time so it looks like city time
+    // because dates are always in relation to your local device
+    timezone = response.timezone;
+    sunrise = getCityTime(response.sys.sunrise, timezone);
+    sunset = getCityTime(response.sys.sunset, timezone);
+    console.log('city time sunrise = ' + sunrise);
+    console.log('city time sunset = ' + sunset);
 
     currentTemp = response.main.temp;
-    sunrise = new Date(response.sys.sunrise * 1000);
-    sunset = new Date(response.sys.sunset * 1000);
-    // sunrise = sunrise.toUTCString();
-    // sunset = sunset.toUTCString();
     generalWeather = response.weather[0].main; //clounds
     console.log('generalWeather =' + generalWeather);
     generalWeatherDescription = response.weather[0].description; //'overcast clouds'
@@ -44,9 +50,33 @@ let weather = (function () {
     myWeatherObject.name = name;
     myWeatherObject.tempMin = tempMin;
     myWeatherObject.tempMax = tempMax;
+    myWeatherObject.timezone = timezone;
 
     console.log(myWeatherObject);
   }
+
+  function getCityTime(sunriseOrSunset, cityTimeZone) {
+    let returnTime = new Date();
+    let anHourInMilliseconds = 1000 * 60 * 60;
+
+    // // london gmt+1     denver gmt utc-6
+    // // if you are in timezone UTC-1, outputs 60
+    // // if you are in timezone UTC+3, outputs -180
+    // // 360 so UTC+6
+    //Returns the difference between UTC and the local time zone, in minutes
+    let timezoneHereOffsetInMin = new Date().getTimezoneOffset();
+    let timezoneHereOffsetToUTCInHr = timezoneHereOffsetInMin / 60;
+    //timezone = shift in seconds from utc ==cityTimeZone
+    let cityTimezoneToUTCInHrs = cityTimeZone / 60 / 60;
+
+    returnTime = new Date(
+      sunriseOrSunset * 1000 +
+        anHourInMilliseconds * timezoneHereOffsetToUTCInHr +
+        anHourInMilliseconds * cityTimezoneToUTCInHrs
+    );
+    return returnTime;
+  }
+
   const _WEATHER_THING = '0107a14fae5cf33892e24c15d71cce7d';
   async function getWeatherData(place) {
     let cityName = place;

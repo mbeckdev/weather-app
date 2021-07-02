@@ -2,7 +2,9 @@ import { weather } from './weather.js';
 import { format } from 'date-fns';
 
 let dom = (function () {
+  let tempUnit = 'F'; //'C' or 'F'
   const domThings = {
+    form: document.getElementById('form'),
     currentTemp: document.getElementById('currentTemp'),
     sunrise: document.getElementById('sunrise'),
     sunset: document.getElementById('sunset'),
@@ -15,25 +17,32 @@ let dom = (function () {
     name: document.getElementById('name'),
     highTemp: document.getElementById('high-temp'),
     lowTemp: document.getElementById('low-temp'),
+    fButton: document.getElementById('f-button'),
+    cButton: document.getElementById('c-button'),
   };
 
   function writeWeather() {
     console.log('writing weather');
+    let degCorFString = '';
+    if (dom.tempUnit == 'C') degCorFString = '\u00B0C';
+    if (dom.tempUnit == 'F') degCorFString = '\u00B0F';
+    // let tempNumberInCorF = undefined;
+    // tempNumberInCorF = getTempNumberInCorF();
 
     domThings.name.textContent = weather.myWeatherObject.name;
     domThings.generalWeatherDescription.textContent =
       weather.myWeatherObject.generalWeatherDescription;
 
-    domThings.currentTemp.textContent = `${kToF(
+    domThings.currentTemp.textContent = `${getTempNumberInCorF(
       weather.myWeatherObject.currentTemp
-    )}\u00B0F`;
+    )}${degCorFString}`;
 
-    domThings.highTemp.textContent = `${kToF(
+    domThings.highTemp.textContent = `${getTempNumberInCorF(
       weather.myWeatherObject.tempMax
-    )}\u00B0F`;
-    domThings.lowTemp.textContent = `${kToF(
+    )}${degCorFString}`;
+    domThings.lowTemp.textContent = `${getTempNumberInCorF(
       weather.myWeatherObject.tempMin
-    )}\u00B0F`;
+    )}${degCorFString}`;
 
     domThings.sunrise.textContent = format(
       weather.myWeatherObject.sunrise,
@@ -47,15 +56,77 @@ let dom = (function () {
     console.log(leSunset);
   }
 
+  function getTempNumberInCorF(kelvin) {
+    let theNumber = undefined;
+
+    if (dom.tempUnit == 'F') {
+      theNumber = kToF(kelvin);
+    } else if (dom.tempUnit == 'C') {
+      theNumber = cToF(kelvin);
+    } else {
+      throw 'Temperature unit is not C or F';
+    }
+    return theNumber;
+  }
+
   function kToF(kelvin) {
     let fahrenheit = undefined;
     fahrenheit = ((kelvin - 273.15) * 9) / 5 + 32;
     fahrenheit = Math.round(fahrenheit * 10) / 10;
     return fahrenheit;
   }
+  function cToF(kelvin) {
+    let celcius = undefined;
+    celcius = kelvin - 273.15;
+    celcius = Math.round(celcius * 10) / 10;
+    return celcius;
+  }
+
+  function setupInitialDom() {
+    _addInitialEventListeners();
+  }
+  function _addInitialEventListeners() {
+    document
+      .getElementById('f-button')
+      .addEventListener('click', _handleTempButtonClick);
+    document
+      .getElementById('c-button')
+      .addEventListener('click', _handleTempButtonClick);
+
+    domThings.form.addEventListener('submit', _formSubmit);
+  }
+
+  function _formSubmit(e) {
+    // prevent default so the page doesn't reload
+    e.preventDefault();
+    console.log('form submitted');
+    const placeDom = document.getElementById('place');
+    let place = placeDom.value;
+    weather.getWeatherData(place);
+  }
+
+  function _handleTempButtonClick(e) {
+    console.log('aaaa');
+
+    if (e.target.id == 'c-button' && dom.tempUnit == 'F') {
+      //change to C
+      dom.tempUnit = 'C';
+      e.target.classList.toggle('selected');
+      domThings.fButton.classList.toggle('selected');
+      writeWeather();
+    } else if (e.target.id == 'f-button' && dom.tempUnit == 'C') {
+      //change to F
+      dom.tempUnit = 'F';
+      e.target.classList.toggle('selected');
+      domThings.cButton.classList.toggle('selected');
+      writeWeather();
+    }
+  }
 
   return {
     writeWeather,
+    setupInitialDom,
+    tempUnit,
   };
 })();
 

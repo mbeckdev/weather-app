@@ -59,12 +59,27 @@ main {
   justify-content: center;
   margin-top: 1rem;
 }
-#temperature-units-container button {
+button {
+  /* #temperature-units-container button { */
   margin: 0 5px;
-  padding: 5px;
+  padding: 5px 10px;
   border-radius: 5px;
   font-family: 'Gugi', cursive;
   /* border: unset; */
+  border: 1px solid black;
+  /* background: #101311; */
+  background: radial-gradient(#101311, #1a635d);
+  /* background: radial-gradient(#35cabd, #101311); */
+  color: #fffdff;
+}
+#temperature-units-container button:active {
+  border: 1px solid grey;
+}
+.selected {
+  /* important here to override the id base styles */
+  border: 1px solid white;
+  /* background: green; */
+  box-shadow: 0 0 5px white;
 }
 
 /* ****************** */

@@ -1,4 +1,5 @@
 import { weather } from './weather.js';
+import { format } from 'date-fns';
 
 let dom = (function () {
   const domThings = {
@@ -6,9 +7,7 @@ let dom = (function () {
     sunrise: document.getElementById('sunrise'),
     sunset: document.getElementById('sunset'),
     generalWeather: document.getElementById('generalWeather'),
-    generalWeatherDescription: document.getElementById(
-      'generalWeatherDescription'
-    ),
+    generalWeatherDescription: document.getElementById('weather-description'),
     windSpeed: document.getElementById('windSpeed'),
     windDir: document.getElementById('windDir'),
     windGustSpeed: document.getElementById('windGustSpeed'),
@@ -21,6 +20,10 @@ let dom = (function () {
   function writeWeather() {
     console.log('writing weather');
 
+    domThings.name.textContent = weather.myWeatherObject.name;
+    domThings.generalWeatherDescription.textContent =
+      weather.myWeatherObject.generalWeatherDescription;
+
     domThings.currentTemp.textContent = `${kToF(
       weather.myWeatherObject.currentTemp
     )}\u00B0F`;
@@ -32,8 +35,16 @@ let dom = (function () {
       weather.myWeatherObject.tempMin
     )}\u00B0F`;
 
-    domThings.sunrise.textContent = weather.myWeatherObject.sunrise;
-    domThings.sunset.textContent = weather.myWeatherObject.sunset;
+    domThings.sunrise.textContent = format(
+      weather.myWeatherObject.sunrise,
+      'h:mm a'
+    );
+    domThings.sunset.textContent = format(
+      weather.myWeatherObject.sunset,
+      'h:mm a'
+    );
+    let leSunset = weather.myWeatherObject.sunset;
+    console.log(leSunset);
   }
 
   function kToF(kelvin) {

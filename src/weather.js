@@ -82,15 +82,19 @@ let weather = (function () {
     let cityName = place;
     let weatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${_WEATHER_THING}`;
 
+    //set dots to dotting
+    dom.startLoadingAnimation();
     const response = await fetch(weatherUrl, { mode: 'cors' })
       .then(function (response) {
         // console.log(response.json());
+
         return response.json();
       })
       .then(function (response) {
         console.log(response);
         setWeatherStuff(response);
         dom.writeWeather();
+        dom.endLoadingAnimation();
       })
       .catch((error) => {
         console.error('Error:', error);

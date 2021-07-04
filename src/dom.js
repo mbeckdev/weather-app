@@ -19,6 +19,8 @@ let dom = (function () {
     lowTemp: document.getElementById('low-temp'),
     fButton: document.getElementById('f-button'),
     cButton: document.getElementById('c-button'),
+    dots: document.querySelectorAll('.dot'),
+    loading: document.getElementById('loading'),
   };
 
   function writeWeather() {
@@ -154,10 +156,25 @@ let dom = (function () {
     }
   }
 
+  function startLoadingAnimation() {
+    domThings.loading.style.visibility = 'visible';
+    domThings.dots[0].classList.add('is-loading1');
+    domThings.dots[1].classList.add('is-loading2');
+    domThings.dots[2].classList.add('is-loading3');
+  }
+  function endLoadingAnimation() {
+    domThings.loading.style.visibility = 'hidden';
+    domThings.dots[0].classList.remove('is-loading1');
+    domThings.dots[1].classList.remove('is-loading2');
+    domThings.dots[2].classList.remove('is-loading3');
+  }
+
   return {
     writeWeather,
     setupInitialDom,
     tempUnit,
+    startLoadingAnimation,
+    endLoadingAnimation,
   };
 })();
 

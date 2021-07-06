@@ -7,3 +7,4 @@ import { dom } from './dom.js';
 // import format from 'date-fns/format';
 
 dom.setupInitialDom();
+gif.getAGif();

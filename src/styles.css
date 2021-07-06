@@ -203,26 +203,15 @@ button {
 
 .is-loading1 {
   animation: myanimation 1s infinite;
-
-  /* animation-name: myanimation;
-  animation-duration: 2s;
-  animation-fill-mode: both;
-  animation-iteration-count: infinite; */
 }
 .is-loading2 {
   animation-delay: -750ms;
-  /* animation: myanimation 1s infinite; */
-
-  /* animation-delay: 250ms; */
   animation-name: myanimation;
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
 .is-loading3 {
   animation-delay: -500ms;
-  /* animation: myanimation 1s infinite; */
-
-  /* animation-delay: 500ms; */
   animation-name: myanimation;
   animation-duration: 1s;
   animation-iteration-count: infinite;
